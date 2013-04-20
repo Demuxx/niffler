@@ -1,6 +1,6 @@
 = niffler
 
-Description goes here.
+This project is a ruby gem wrapper of the Maven jar repository (http://search.maven.org/#api).
 
 == Contributing to niffler
  
