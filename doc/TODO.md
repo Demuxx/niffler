@@ -6,3 +6,6 @@
 * Search by filepath
 * Search by classname
 * search by fully-qualified classname
+
+## Fixes
+* Specs should use their own, fake server

@@ -87,7 +87,7 @@ describe Niffler::Maven do
       end # it
 
       it 'returns the latest version' do
-        @result.version.should eq("2.10.4")
+        @result.version.should eq("2.11.0")
       end # it
 
       it 'returns the repository' do
