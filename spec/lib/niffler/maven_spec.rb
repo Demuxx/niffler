@@ -3,34 +3,46 @@ require 'json'
 require 'niffler/maven'
 
 describe Niffler::Maven do
-  describe '#group_query' do 
-    before do
-      @result = Niffler::Maven.group_query("guice")
-    end # before
+  describe '#group_query' do
+    context 'with a valid group name' do
+      before do
+        @result = Niffler::Maven.group_query("guice")
+      end # before
     
-    it 'returns a Niffler::Maven object' do
-      @result.should be_kind_of(Niffler::Maven)
-    end # it
+      it 'returns a Niffler::Maven object' do
+        @result.should be_kind_of(Niffler::Maven)
+      end # it
     
-    it 'returns the group name' do
-      @result.group.should eq("org.apache.servicemix.bundles")
-    end # it
+      it 'returns the group name' do
+        @result.group.should eq("org.apache.servicemix.bundles")
+      end # it
     
-    it 'returns the artifact name' do
-      @result.artifact.should eq("org.apache.servicemix.bundles.guice")
-    end # it
+      it 'returns the artifact name' do
+        @result.artifact.should eq("org.apache.servicemix.bundles.guice")
+      end # it
     
-    it 'returns the latest version' do
-      @result.version.should eq("3.0_1")
-    end # it
+      it 'returns the latest version' do
+        @result.version.should eq("3.0_1")
+      end # it
     
-    it 'returns the repository' do
-      @result.repository.should eq("central")
-    end # it
+      it 'returns the repository' do
+        @result.repository.should eq("central")
+      end # it
     
-    it 'returns the packaging' do
-      @result.packaging.should eq("bundle")
-    end # it
+      it 'returns the packaging' do
+        @result.packaging.should eq("bundle")
+      end # it
+    end # context
+  
+    context 'with a fake group name' do
+      before do
+        @result = Niffler::Maven.group_query("thisisafakegroupname")
+      end # before
+      
+      it 'returns nil for a fake name' do
+        @result.should be_nil
+      end # it
+    end # context
   end # describe 
   
   describe '#groups_query' do
@@ -43,6 +55,16 @@ describe Niffler::Maven do
         @results.should be_kind_of(Array)
         @results.count.should eq(235)
         @results.last.should be_kind_of(Niffler::Maven)
+      end # it
+    end # context
+    
+    context 'with a fake groups name' do
+      before do
+        @result = Niffler::Maven.groups_query("thisisafakegroupsname")
+      end # before
+      
+      it 'returns an empty array for a fake name' do
+        @result.should be_empty
       end # it
     end # context
     
@@ -68,6 +90,16 @@ describe Niffler::Maven do
       it 'returns an array of responses' do
         @results.should be_kind_of(Array)
         @results.last.should be_kind_of(Niffler::Maven)
+      end # it
+    end # context
+    
+    context 'with a fake artifacts name' do
+      before do
+        @result = Niffler::Maven.artifacts_query("thisisafakeartifactsname")
+      end # before
+      
+      it 'returns an empty array for a fake name' do
+        @result.should be_empty
       end # it
     end # context
   end # describe
@@ -98,6 +130,16 @@ describe Niffler::Maven do
         @result.packaging.should eq("maven-plugin")
       end # it
     end # context
+    
+    context 'with a fake artifact name' do
+      before do
+        @result = Niffler::Maven.artifact_query("thisisafakeartifactname")
+      end # before
+      
+      it 'returns nil for a fake name' do
+        @result.should be_nil
+      end # it
+    end # context
   end # describe
   
   describe '#hash_query' do
@@ -120,6 +162,16 @@ describe Niffler::Maven do
 
       it 'returns the packaging' do
         @result.packaging.should eq("jar")
+      end # it
+    end # context
+    
+    context 'with a fake hash' do
+      before do
+        @result = Niffler::Maven.hash_query("ffffffffffffffffffffffffffffffffffffffff")
+      end
+      
+      it "returns empty if it doesn't exist" do
+        @result.should be_nil
       end # it
     end # context
   end # describe hash

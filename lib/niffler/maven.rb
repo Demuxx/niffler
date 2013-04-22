@@ -80,9 +80,11 @@ class Niffler
       results = []
       # response docs refers to the portion of the response with the software metadata for each result
       for r in json["response"]["docs"]
-        result = Niffler::Maven.new(group: r["g"], artifact: r["a"], version: r["latestVersion"], 
-          repository: r["repositoryId"], packaging: r["p"])
-        results << result
+        unless r.nil?
+          result = Niffler::Maven.new(group: r["g"], artifact: r["a"], version: r["latestVersion"], 
+            repository: r["repositoryId"], packaging: r["p"])
+          results << result
+        end # unless r.nil?
       end # for result
       
       return results
@@ -93,8 +95,10 @@ class Niffler
       # {"responseHeader"=>{"status"=>0, "QTime"=>1, "params"=>{"spellcheck"=>"true", "fl"=>"id,g,a,latestVersion,p,ec,repositoryId,text,timestamp,versionCount", "sort"=>"score desc,timestamp desc,g asc,a asc", "indent"=>"off", "q"=>"guice", "qf"=>"text^20 g^5 a^10", "spellcheck.count"=>"5", "wt"=>"json", "rows"=>"20", "version"=>"2.2", "defType"=>"dismax"}}, "response"=>{"numFound"=>234, "start"=>0, "docs"=>[{"id"=>"com.jolira:guice", "g"=>"com.jolira", "a"=>"guice", "latestVersion"=>"3.0.0", "repositoryId"=>"central", "p"=>"jar", "timestamp"=>1301724755000, "versionCount"=>8, "text"=>["com.jolira", "guice", "-javadoc.jar", "-sources.jar", ".jar", ".pom"], "ec"=>["-javadoc.jar", "-sources.jar", ".jar", ".pom"]}
       # response docs refers to the portion of the response with the software metadata for each result
       r = json["response"]["docs"].last
-      result = Niffler::Maven.new(group: r["g"], artifact: r["a"], version: r["v"], 
-        repository: r["repositoryId"], packaging: r["p"])
+      unless r.nil?
+        result = Niffler::Maven.new(group: r["g"], artifact: r["a"], version: r["v"], 
+          repository: r["repositoryId"], packaging: r["p"])
+      end
       return result
     end # def parse_response
   end # class Maven
